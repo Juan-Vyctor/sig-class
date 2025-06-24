@@ -19,7 +19,7 @@ while resp1 != '0':
     print();
     resp1 = input("Escolha uma das opções: ");
 
-    if resp1 == '1':   
+    if resp1 == '1':
         print();
         print("#########################################################################################");
         print("#############                       Sua agenda está assim                   #############");
