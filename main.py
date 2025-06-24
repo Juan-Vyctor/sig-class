@@ -10,12 +10,12 @@ while resp != '0':
     print("###########################################")
     print("######       Projeto SIG-Class       ######")
     print("###########################################")
-    print("####    1 - Ver horários atuais     #####")
-    print("####    2 - Visualizar matérias     #####")
-    print("####    3 - Checar horários vagos   #####")
-    print("####    4 - Adicionar matéria       #####")
-    print("####    5 - Adicionar horário       #####")
-    print("####    0 - Sair                    #####")
+    print("#####    1 - Ver horários atuais     ######")
+    print("#####    2 - Visualizar matérias     ######")
+    print("#####    3 - Checar horários vagos   ######")
+    print("#####    4 - Adicionar matéria       ######")
+    print("#####    5 - Adicionar horário       ######")
+    print("#####    0 - Sair                    ######")
     resp = input("##### Escolha sua opção: ")
 
     if resp == '1':   
