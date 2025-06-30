@@ -104,12 +104,12 @@ while resp1 != "0":
         print("#########################################################################################");
         print();
         resp2 = input("Escolha uma das opções: ");
-    
+
         if resp2 == 1 :
             os.system("clear");
             materia = str(input("Qual o nome da matéria a ser adicionada?"));
             professor = str(input("Quem ministra essa matéria?"));
-    
+
             # aqui é o lance que Flavius falou pra adicionar um professor também
             # assim com dicionário é mais fácil de acessar
             materias[materia] = {
@@ -141,37 +141,32 @@ while resp1 != "0":
         print("#########################################################################################");
         print();
         resp2 = input("Escolha uma das opções: ");
-    
+
         if resp2 == 1 :
             os.system("clear");
             materia = str(input("Qual matéria vai ser adicionada?"));
-            horario = str(input("Escolha qual em qual horário a matéria será adicionada. Utilize o formato da universidade (número/letra/números)"));
-    
-            # esse pedaço aqui todo é pra achar qual o index de onde tá o período da aula
-            # se é manhã tarde ou noite no caso
-            posicao = 0;
-            loop = True
-            while loop == True :
-                if posicao < horario.count() :
-                    if horario[posicao].isalpha() == True :
-                        loop = False;
-                    else : 
-                        posicao += 1;
-                else :
-                    print("#########################################################################################");
-                    print("############   Você digitou um formato inválido, voltando ao menu inicial    ############");
-                    print("#########################################################################################");
-                    loop = False;
+            horarios = str(input("Escolha qual em qual horário a matéria será adicionada. Utilize o formato da universidade (número/letra/números).\nCaso você queira colocar vários horários de uma vez, separe por ';'. Ex: '12T5; 34M2'.\n"));
 
-            # aqui quebra a string em 3 pra ter separado certinho o quer
-            dias = horario[0:posicao];
-            hora = horario[posicao].upper();
-            aulas = horario[(posicao+1):];
-        
-            # aqui só sai metendo as matéria em cada canto mesmo
-            for dia in dias :
-                for aula in aulas :
-                    agenda[dia][hora][aula] = materias[materia];
+            horarios.replace(" ", "").upper();
+            horarios = horarios.split(";");
+
+            for horario in horarios :
+                if "M" in horario :
+                    dados = horario.split("M");
+                    dia = dados[0];
+                    aula = dados[1]
+                    agenda[dia]["M"][aula] = materias[materia]
+                elif "T" in horario:
+                    dados = horario.split("T")
+                    dia = dados[0]
+                    aula = dados[1]
+                    agenda[dia]["T"][aula] = materias[materia]
+                elif "N" in horario:
+                    dados = horario.split("N")
+                    dia = dados[0]
+                    aula = dados[1]
+                    agenda[dia]["N"][aula] = materias[materia]
+                    
         elif resp2 == 0 :
             # aqui vai ser só um return mesmo não sei ainda como vai funcionar insira módulos i guess
             os.system("clear");
