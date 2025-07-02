@@ -92,6 +92,70 @@ def menuHorariosAtuais() :
     
     return opcaoSecundaria;
 
+def menuRemoveHorarios() :
+    print("Escolha qual em qual horário a matéria será removida. Utilize o formato da universidade (números/letra/números).");
+    horarios = str(input("Caso você queira colocar vários horários de uma vez, separe por ';'. Ex: '12T5; 34M2'.\n"));
+    removeHorario(agenda, horarios);
+
+def menuMaterias() :
+    os.system("clear");
+    print("#########################################################################################");
+    print("#############               Aqui estão as matérias cadastradas              #############");
+    print("#########################################################################################");
+    print();
+    mostraMaterias(materias);
+    print();
+    print("#########################################################################################");
+    print("#############                       O que deseja fazer?                     #############");
+    print("#########################################################################################");
+    print("#############                   1 - Criar nova matéria                      #############");
+    print("#############                   0 - Voltar                                  #############");
+    print("#########################################################################################");
+    print();
+
+    opcaoSecundaria = input("Escolha uma das opções: ");
+    return opcaoSecundaria;
+
+def menuHorariosVagos() :
+    os.system("clear");
+    #arrumar
+    print("#########################################################################################");
+    print("############               Seus horários vagos são os seguintes              ############");
+    print("#########################################################################################");
+    print();
+    
+    print("Horários da Manhã");
+    horariosManha = pegaHorariosVagos(agenda);
+    for horario in horariosManha :
+        print();
+    print();
+
+    print("Horários da Tarde");
+    horariosTarde = pegaHorariosVagos(agenda);
+    for horario in horariosTarde :
+        print("Matéria: " + horario["nome"]);
+        print("Professor(a) responsável: " + horario["professor"]);
+    print();
+    
+    print("Horários da Noite");
+    horariosNoite = pegaHorariosVagos(agenda);
+    for horario in horariosNoite :
+        print("Matéria: " + horario["nome"]);
+        print("Professor(a) responsável: " + horario["professor"]);
+    print();
+
+    print();
+    print("#########################################################################################");
+    print("#############                       O que deseja fazer?                     #############");
+    print("#########################################################################################");
+    print("#############                   1 - Adicionar matéria à um dos horários     #############");
+    print("#############                   0 - Voltar                                  #############");
+    print("#########################################################################################");
+    print();
+
+    opcaoSecundaria = input("Escolha uma das opções: ");
+    return opcaoSecundaria;
+
 # funções de horarios
 def pegaHorariosTurno(agenda, turno) :
     horarios = {};
@@ -174,27 +238,14 @@ while opcaoPrincipal != "0":
     if opcaoPrincipal == "1":
         opcaoSecundaria = menuHorariosAtuais();
         if opcaoSecundaria == "1" :
-            horarios = str(input("Escolha qual em qual horário a matéria será removida. Utilize o formato da universidade (números/letra/números).\nCaso você queira colocar vários horários de uma vez, separe por ';'. Ex: '12T5; 34M2'.\n"));
-            removeHorario(agenda, horarios);
+            menuRemoveHorarios();
         elif opcaoSecundaria == "0" :
             # ainda em andamento
             os.clear();
     elif opcaoPrincipal == "2":
-        os.system("clear");
-        print("#########################################################################################");
-        print("#############               Aqui estão as matérias cadastradas              #############");
-        print("#########################################################################################");
-        print();
-        mostraMaterias(materias);
-        print();
-        print("#########################################################################################");
-        print("#############                       O que deseja fazer?                     #############");
-        print("#########################################################################################");
-        print("#############                   1 - Criar nova matéria                      #############");
-        print("#############                   0 - Voltar                                  #############");
-        print("#########################################################################################");
-        print();
-        opcaoSecundaria = input("Escolha uma das opções: ");
+        opcaoSecundaria = menuMaterias();
+        if opcaoSecundaria == "1" :
+            menuNovaMateria();
     elif opcaoPrincipal == "3":
         os.system("clear");
         #arrumar
