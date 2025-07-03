@@ -386,7 +386,7 @@ while opcaoPrincipal != "0":
         if opcaoSecundaria == "2":
             removeMateria(materias)
             opcaoPrincipal = redirecionaSucesso()
-        elif opcaoSecundaria == 0 :
+        elif opcaoSecundaria == "0" :
             opcaoPrincipal = menuInicial();
         else :
             opcaoPrincipal = redirecionaErro();
