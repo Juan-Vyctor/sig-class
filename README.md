@@ -1,4 +1,4 @@
-# sig-class
+# SigClass
 Projeto final da disciplina Algoritmos e Lógica de Programação
 
 # Primeira semana
