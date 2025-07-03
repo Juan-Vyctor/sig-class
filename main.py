@@ -57,12 +57,16 @@ def menuHorariosAtuais() :
     print("#############                       Sua agenda está assim                   #############");
     print("#########################################################################################");
     print();
-    
-    print("Horários da Manhã");
+
+    print("#############                         Horários da Manhã                     #############");
     horariosManha = pegaHorariosTurno(agenda, "M");
-    for horario in horariosManha :
-        print("Matéria: " + horario["nome"]);
-        print("Professor(a) responsável: " + horario["professor"]);
+    for dia in horariosManha :
+        for horario in horariosManha[dia] :
+            print(dia + "a feira", end=', ');
+            print(str(horario) + "o horário:");
+            aula = horariosManha[dia][horario];
+            print("Matéria: " + aula["nome"]);
+            print("Professor(a) responsável: " + aula["professor"] + "\n");
     print();
 
     print("Horários da Tarde");
@@ -71,14 +75,14 @@ def menuHorariosAtuais() :
         print("Matéria: " + horario["nome"]);
         print("Professor(a) responsável: " + horario["professor"]);
     print();
-    
+
     print("Horários da Noite");
     horariosNoite = pegaHorariosTurno(agenda, "N");
     for horario in horariosNoite :
         print("Matéria: " + horario["nome"]);
         print("Professor(a) responsável: " + horario["professor"]);
     print();
-    
+
     print("#########################################################################################");
     print("#############                       O que deseja fazer?                     #############");
     print("#########################################################################################");
@@ -88,7 +92,7 @@ def menuHorariosAtuais() :
     print("#############                   0 - Voltar                                  #############");
     print("#########################################################################################");
     print();
-    
+
     opcaoSecundaria = input("Escolha uma das opções: ");
     return opcaoSecundaria;
 def menuMaterias() :
@@ -221,16 +225,16 @@ def redirecionaErro() :
 
 # funções de horarios
 def pegaHorariosTurno(agenda, turno) :
-    horarios = {};
+    utilizados = {};
 
     for dia in agenda :
+        utilizados[dia] = {};
         for horario in range(1, 7) :
             aula = agenda[dia][turno][str(horario)];
-            if agenda[dia][turno][str(horario)] != None :
-                horarios["nome"] = aula["nome"];
-                horarios["professor"] = aula["professor"];
+            if aula != None :
+                utilizados[dia][horario] = aula;
 
-    return horarios;
+    return utilizados;
 def pegaHorariosVagos(agenda) :
     vagos = {};
 
@@ -321,7 +325,7 @@ def removeHorarios(agenda) :
             aula = dados[1];
             agenda[dia]["N"][aula] = None;    
 
-#funções de matérias
+# funções de matérias
 def listaMaterias(materias) :
     for materia in materias :
         print(materia["nome"]);
