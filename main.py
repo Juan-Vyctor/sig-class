@@ -230,7 +230,7 @@ def exibeHorariosVagos(horarios):
         print();
 def cadastraHorarios(agenda, materias) :
     os.system("clear");
-    print("Escolha qual em qual horário a matéria será adicionada. Utilize o formato da universidade (número/letra/números). ");
+    print("Escolha em qual horário a matéria será adicionada. Utilize o formato da universidade (número/letra/números). ");
     horarios = str(input("Caso você queira colocar vários horários de uma vez, separe por ';'. Ex: '25T5; 34M2'.\n"));
     horarios.replace(" ", "").upper();
     horarios = horarios.split(";");
@@ -246,14 +246,14 @@ def cadastraHorarios(agenda, materias) :
             aulas = dados[1];
             for dia in dias :
                 for aula in aulas :
-                    agenda[dia]["M"][aula] = materias[materia];
+                    agenda['2']["M"][aula] = materias[materia];
         elif "T" in horario:
             dados = horario.split("T");
             dias = dados[0];
             aulas = dados[1];
             for dia in dias :
                 for aula in aulas :
-                    agenda["3"]["T"][aula] = materias[materia];
+                    agenda[dia]["T"][aula] = materias[materia];
         elif "N" in horario:
             dados = horario.split("N");
             dias = dados[0];
@@ -263,50 +263,66 @@ def cadastraHorarios(agenda, materias) :
                     agenda[dia]["N"][aula] = materias[materia];
 def atualizaHorarios(agenda, materias) :
     os.system("clear");
-    materia = str(input("Qual matéria vai ser adicionada?"));
-    print("Escolha qual em qual horário a matéria será adicionada. Utilize o formato da universidade (número/letra/números).");
-    horarios = str(input("\nCaso você queira colocar vários horários de uma vez, separe por ';'. Ex: '12T5; 34M2'.\n"));
+    print("Escolha o horário da matéria será adicionada. Utilize o formato da universidade (número/letra/números). ");
+    horarios = str(input("Caso você queira colocar vários horários de uma vez, separe por ';'. Ex: '25T5; 34M2'.\n"));
     horarios.replace(" ", "").upper();
     horarios = horarios.split(";");
+
+    print("\nQual vai ser a nova matéria desses horários? Escolha uma dentre as suas seguintes:");
+    exibeMaterias(materias);
+    materia = str(input());
 
     for horario in horarios :
         if "M" in horario :
             dados = horario.split("M");
-            dia = dados[0];
-            aula = dados[1];
-            agenda[dia]["M"][aula] = materias[materia];
+            dias = dados[0];
+            aulas = dados[1];
+            for dia in dias :
+                for aula in aulas :
+                    agenda['2']["M"][aula] = materias[materia];
         elif "T" in horario:
             dados = horario.split("T");
-            dia = dados[0];
-            aula = dados[1];
-            agenda[dia]["T"][aula] = materias[materia];
+            dias = dados[0];
+            aulas = dados[1];
+            for dia in dias :
+                for aula in aulas :
+                    agenda[dia]["T"][aula] = materias[materia];
         elif "N" in horario:
             dados = horario.split("N");
-            dia = dados[0];
-            aula = dados[1];
-            agenda[dia]["N"][aula] = materias[materia];
+            dias = dados[0];
+            aulas = dados[1];
+            for dia in dias :
+                for aula in aulas :
+                    agenda[dia]["N"][aula] = materias[materia];
 def removeHorarios(agenda) :
-    print("Escolha qual em qual horário a matéria será removida. Utilize o formato da universidade (números/letra/números).");
-    horarios = str(input("Caso você queira remover vários horários de uma vez, separe por ';'. Ex: '12T5; 34M2'.\n"));
+    os.system("clear");
+    print("Escolha o horário da matéria será removida. Utilize o formato da universidade (número/letra/números). ");
+    horarios = str(input("Caso você queira colocar vários horários de uma vez, separe por ';'. Ex: '25T5; 34M2'.\n"));
     horarios.replace(" ", "").upper();
     horarios = horarios.split(";");
 
     for horario in horarios :
         if "M" in horario :
             dados = horario.split("M");
-            dia = dados[0];
-            aula = dados[1];
-            agenda[dia]["M"][aula] = None;
+            dias = dados[0];
+            aulas = dados[1];
+            for dia in dias :
+                for aula in aulas :
+                    agenda['2']["M"][aula] = None;
         elif "T" in horario:
             dados = horario.split("T");
-            dia = dados[0];
-            aula = dados[1];
-            agenda[dia]["T"][aula] = None;
+            dias = dados[0];
+            aulas = dados[1];
+            for dia in dias :
+                for aula in aulas :
+                    agenda[dia]["T"][aula] = None;
         elif "N" in horario:
             dados = horario.split("N");
-            dia = dados[0];
-            aula = dados[1];
-            agenda[dia]["N"][aula] = None;    
+            dias = dados[0];
+            aulas = dados[1];
+            for dia in dias :
+                for aula in aulas :
+                    agenda[dia]["N"][aula] = None;
 
 # funções de matérias
 def exibeMaterias(materias) :
@@ -324,11 +340,14 @@ def cadastraMateria(materias) :
     };
 def removeMateria(materias) :
     os.system("clear");
-    nome = str(input("Qual o nome da matéria a ser removida?"));
-    professor = str(input("Quem ministra essa matéria?"));
+    nome = str(input("Qual o nome da matéria a ser removida? "));
+    professor = str(input("Quem ministra essa matéria? "));
     for materia in materias :
-        if materia["nome"] == nome and materia["professor"] == professor :
-            del materias[materia];
+        nomeMateria = materias[materia]["nome"];
+        nomeProfessor = materias[materia]["professor"];
+        if nomeMateria == nome and nomeProfessor == professor :
+            apagar = materia;
+    del materias[apagar];
 
 opcaoPrincipal = menuInicial();
 while opcaoPrincipal != "0":
@@ -363,7 +382,10 @@ while opcaoPrincipal != "0":
         opcaoSecundaria = menuMaterias();
         if opcaoSecundaria == "1" :
             cadastraMateria(materias);
-            opcaoPrincipal = redirecionaSucesso();
+            opcaoPrincipal = redirecionaSucesso()
+        if opcaoSecundaria == "2":
+            removeMateria(materias)
+            opcaoPrincipal = redirecionaSucesso()
         elif opcaoSecundaria == 0 :
             opcaoPrincipal = menuInicial();
         else :
