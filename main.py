@@ -1,20 +1,24 @@
 import os
 
 #####################################
-##### Projeto Class - Versão 4  #####
+##### Projeto Class - Versão 5  #####
 #####################################
+
+# recebimento de arquivos
+write = open("data.py", "w");
+read = open("data.py", "r");
 
 # preenchimento de dados
 materias = {
-    "Introdução à informática": {
+    "DCT1102": {
         "nome": "Introdução à informática",
         "professor": "Luís Paulo",
     },
-    "Teoria Geral da Administração": {
+    "DCT3101": {
         "nome": "Teoria Geral da Administração",
         "professor": "Humberto Habelo",
     },
-    "Fundamentos da Matemática": {
+    "DCT1301": {
         "nome": "Fundamentos da Matemática",
         "professor": "Almir",
     },
@@ -25,13 +29,13 @@ materias = {
 }
 horarios = {
     "M": {
-        "1": None, "2": None, "3": None, "4": None, "5": materias["Introdução à informática"], "6": materias["Introdução à informática"],
+        "1": None, "2": None, "3": None, "4": None, "5": materias["DCT1102"], "6": materias["DCT1102"],
     },
     "T": {
-        "1": None, "2": None, "3": None, "4": None, "5": materias["Fundamentos da Matemática"], "6": materias["Fundamentos da Matemática"],
+        "1": None, "2": None, "3": None, "4": None, "5": materias["DCT1301"], "6": materias["DCT1301"],
     },
     "N": {
-        "1": materias["Teoria Geral da Administração"], "2": materias["Teoria Geral da Administração"], "3": None, "4": None, "5": None, "6": None,
+        "1": materias["DCT3101"], "2": materias["DCT3101"], "3": None, "4": None, "5": None, "6": None,
     },
 };
 agenda = {
@@ -60,36 +64,145 @@ def menuInicial() :
 def menuHorariosAtuais() :
     os.system("clear");
     print("#########################################################################################");
-    print("#############                       Sua agenda está assim                   #############");
+    print("############               Seus horários vagos são os seguintes              ############");
     print("#########################################################################################");
     print();
 
-    print("#########################################################################################");
-    print("#############                       Horários da Manhã                       #############");
-    print("#########################################################################################");
-    print();
-
+    haOcupados = False;
     horariosManha = pegaHorariosTurno(agenda, "M");
-    exibeHorariosOcupados(horariosManha);
+    for horario in horariosManha.values() :
+        for ehOcupado in horario.values() :
+            if haOcupados == False :
+                if ehOcupado == True :
+                    haOcupados == True;
+    if haOcupados :
+        print("#########################################################################################");
+        print("#############                       Horários da Manhã                       #############");
+        print("#########################################################################################");
+        print();
+        exibeHorariosOcupados(horariosManha);
+    else :
+        print("#########################################################################################");
+        print("#############              Você não possui horários pela Manhã              #############");
+        print("#########################################################################################");
+        print();
 
-    print("#########################################################################################");
-    print("#############                       Horários da Tarde                       #############");
-    print("#########################################################################################");
+    haOcupados = False
     horariosTarde = pegaHorariosTurno(agenda, "T")
-    exibeHorariosOcupados(horariosTarde);
+    for horario in horariosTarde.values():
+        for ehOcupado in horario.values():
+            if haOcupados == False :
+                if ehOcupado == True:
+                    haOcupados == True;
+    if horariosTarde :
+        print("#########################################################################################");
+        print("#############                       Horários da Tarde                       #############");
+        print("#########################################################################################");
+        print();
+        exibeHorariosOcupados(horariosTarde);
+    else :
+        print("#########################################################################################");
+        print("#############              Você não possui horários pela Tarde              #############");
+        print("#########################################################################################");
+        print();
 
-    print("#########################################################################################");
-    print("#############                       Horários da Noite                       #############");
-    print("#########################################################################################");
+    haOcupados = False
     horariosNoite = pegaHorariosTurno(agenda, "N")
-    exibeHorariosOcupados(horariosNoite);
+    for horario in horariosNoite.values():
+        for ehOcupado in horario.values():
+            if haOcupados == False :
+                if ehOcupado == True:
+                    haOcupados == True
+    if horariosNoite :
+        print("#########################################################################################");
+        print("#############                       Horários da Noite                       #############");
+        print("#########################################################################################");
+        print();
+        exibeHorariosOcupados(horariosNoite);
+    else :
+        print("#########################################################################################");
+        print("#############              Você não possui horários pela Noite              #############");
+        print("#########################################################################################");
+        print();
 
     print("#########################################################################################");
     print("#############                       O que deseja fazer?                     #############");
     print("#########################################################################################");
     print("#############                   1 - Adicionar horário                       #############");
-    print("#############                   2 - Atualizar horário                       #############");
-    print("#############                   3 - Remover horário                         #############");
+    print("#############                   0 - Voltar                                  #############");
+    print("#########################################################################################");
+    print();
+
+    opcaoSecundaria = str(input("Escolha uma das opções: "))
+    return opcaoSecundaria;
+def menuHorariosVagos() :
+    os.system("clear");
+    print("#########################################################################################");
+    print("############               Seus horários vagos são os seguintes              ############");
+    print("#########################################################################################");
+    print();
+
+    haVazios = False;
+    horariosManha = pegaHorariosVagos(agenda, "M");
+    for horario in horariosManha.values() :
+        for ehVazio in horario.values() :
+            if ehVazio == False :
+                if ehVazio == True :
+                    haVazios = True;
+    if haVazios :
+        print("#########################################################################################");
+        print("#############                       Horários da Manhã                       #############");
+        print("#########################################################################################");
+        print();
+        exibeHorariosVagos(horariosManha);
+    else :
+        print("#########################################################################################");
+        print("#############           Você não possui horários vagos pela Manhã           #############");
+        print("#########################################################################################");
+        print();
+
+    haVazios = False
+    horariosTarde = pegaHorariosVagos(agenda, "T")
+    for horario in horariosTarde.values():
+        for ehVazio in horario.values():
+            if ehVazio == False :
+                if ehVazio == True:
+                    haVazios = True;
+    if horariosTarde :
+        print("#########################################################################################");
+        print("#############                       Horários da Tarde                       #############");
+        print("#########################################################################################");
+        print();
+        exibeHorariosVagos(horariosTarde);
+    else :
+        print("#########################################################################################");
+        print("#############           Você não possui horários vagos pela Tarde           #############");
+        print("#########################################################################################");
+        print();
+
+    haVazios = False
+    horariosNoite = pegaHorariosVagos(agenda, "N")
+    for horario in horariosNoite.values():
+        for ehVazio in horario.values():
+            if ehVazio == False :
+                if ehVazio == True:
+                    haVazios = True
+    if horariosNoite :
+        print("#########################################################################################");
+        print("#############                       Horários da Noite                       #############");
+        print("#########################################################################################");
+        print();
+        exibeHorariosVagos(horariosNoite);
+    else :
+        print("#########################################################################################");
+        print("#############           Você não possui horários vagos pela Noite           #############");
+        print("#########################################################################################");
+        print();
+
+    print("#########################################################################################");
+    print("#############                       O que deseja fazer?                     #############");
+    print("#########################################################################################");
+    print("#############                   1 - Adicionar horário                       #############");
     print("#############                   0 - Voltar                                  #############");
     print("#########################################################################################");
     print();
@@ -109,44 +222,6 @@ def menuMaterias() :
     print("#########################################################################################");
     print("#############                   1 - Criar nova matéria                      #############");
     print("#############                   2 - Remover uma matéria                     #############");
-    print("#############                   0 - Voltar                                  #############");
-    print("#########################################################################################");
-    print();
-
-    opcaoSecundaria = str(input("Escolha uma das opções: "))
-    return opcaoSecundaria;
-def menuHorariosVagos() :
-    os.system("clear");
-    print("#########################################################################################");
-    print("############               Seus horários vagos são os seguintes              ############");
-    print("#########################################################################################");
-    print();
-
-    print("#########################################################################################");
-    print("#############                       Horários da Manhã                       #############");
-    print("#########################################################################################");
-    print();
-
-    horariosManha = pegaHorariosVagos(agenda, "M");
-    exibeHorariosVagos(horariosManha);
-
-    print("#########################################################################################");
-    print("#############                       Horários da Tarde                       #############");
-    print("#########################################################################################");
-    horariosTarde = pegaHorariosVagos(agenda, "T")
-    exibeHorariosVagos(horariosTarde);
-
-    print("#########################################################################################");
-    print("#############                       Horários da Noite                       #############");
-    print("#########################################################################################");
-    horariosNoite = pegaHorariosVagos(agenda, "N")
-    exibeHorariosVagos(horariosNoite);
-
-    print();
-    print("#########################################################################################");
-    print("#############                       O que deseja fazer?                     #############");
-    print("#########################################################################################");
-    print("#############                   1 - Adicionar matéria à um dos horários     #############");
     print("#############                   0 - Voltar                                  #############");
     print("#########################################################################################");
     print();
@@ -228,39 +303,41 @@ def exibeHorariosVagos(horarios):
         for horario in horarios[dia]:
             print(str(horario) + "o horário");
         print();
-def cadastraHorarios(agenda, materias) :
+def cadastraHorarios(agenda, horarios, materia):
+    for horario in horarios:
+        if "M" in horario:
+            dados = horario.split("M")
+            dias = dados[0]
+            aulas = dados[1]
+            for dia in dias:
+                for aula in aulas:
+                    agenda["2"]["M"][aula] = materias[materia]
+        elif "T" in horario:
+            dados = horario.split("T")
+            dias = dados[0]
+            aulas = dados[1]
+            for dia in dias:
+                for aula in aulas:
+                    agenda[dia]["T"][aula] = materias[materia]
+        elif "N" in horario:
+            dados = horario.split("N")
+            dias = dados[0]
+            aulas = dados[1]
+            for dia in dias:
+                for aula in aulas:
+                    agenda[dia]["N"][aula] = materias[materia]
+def menuCadastraHorarios(agenda, materias) :
     os.system("clear");
     print("Escolha em qual horário a matéria será adicionada. Utilize o formato da universidade (número/letra/números). ");
     horarios = str(input("Caso você queira colocar vários horários de uma vez, separe por ';'. Ex: '25T5; 34M2'.\n"));
     horarios.replace(" ", "").upper();
     horarios = horarios.split(";");
 
-    print("\nQual matéria vai ser adicionada a esses horários? Escolha uma dentre as suas seguintes:");
+    print("\nQual matéria vai ser adicionada a esses horários? Escolha uma dentre as suas seguintes, digitando o código da mesma:");
     exibeMaterias(materias);
     materia = str(input());
 
-    for horario in horarios :
-        if "M" in horario :
-            dados = horario.split("M");
-            dias = dados[0];
-            aulas = dados[1];
-            for dia in dias :
-                for aula in aulas :
-                    agenda['2']["M"][aula] = materias[materia];
-        elif "T" in horario:
-            dados = horario.split("T");
-            dias = dados[0];
-            aulas = dados[1];
-            for dia in dias :
-                for aula in aulas :
-                    agenda[dia]["T"][aula] = materias[materia];
-        elif "N" in horario:
-            dados = horario.split("N");
-            dias = dados[0];
-            aulas = dados[1];
-            for dia in dias :
-                for aula in aulas :
-                    agenda[dia]["N"][aula] = materias[materia];
+    cadastraHorarios(agenda, horarios, materia);
 def atualizaHorarios(agenda, materias) :
     os.system("clear");
     print("Escolha o horário da matéria será adicionada. Utilize o formato da universidade (número/letra/números). ");
@@ -268,86 +345,67 @@ def atualizaHorarios(agenda, materias) :
     horarios.replace(" ", "").upper();
     horarios = horarios.split(";");
 
-    print("\nQual vai ser a nova matéria desses horários? Escolha uma dentre as suas seguintes:");
+    print("\nQual vai ser a nova matéria desses horários? Escolha uma dentre as suas seguintes, digitando o código da mesma:");
     exibeMaterias(materias);
     materia = str(input());
 
-    for horario in horarios :
-        if "M" in horario :
-            dados = horario.split("M");
-            dias = dados[0];
-            aulas = dados[1];
-            for dia in dias :
-                for aula in aulas :
-                    agenda['2']["M"][aula] = materias[materia];
+    cadastraHorarios(agenda, horarios, materia);
+def removeHorarios(agenda, horarios):
+    for horario in horarios:
+        if "M" in horario:
+            dados = horario.split("M")
+            dias = dados[0]
+            aulas = dados[1]
+            for dia in dias:
+                for aula in aulas:
+                    agenda["2"]["M"][aula] = None;
         elif "T" in horario:
-            dados = horario.split("T");
-            dias = dados[0];
-            aulas = dados[1];
-            for dia in dias :
-                for aula in aulas :
-                    agenda[dia]["T"][aula] = materias[materia];
+            dados = horario.split("T")
+            dias = dados[0]
+            aulas = dados[1]
+            for dia in dias:
+                for aula in aulas:
+                    agenda[dia]["T"][aula] = None;
         elif "N" in horario:
-            dados = horario.split("N");
-            dias = dados[0];
-            aulas = dados[1];
-            for dia in dias :
-                for aula in aulas :
-                    agenda[dia]["N"][aula] = materias[materia];
-def removeHorarios(agenda) :
+            dados = horario.split("N")
+            dias = dados[0]
+            aulas = dados[1]
+            for dia in dias:
+                for aula in aulas:
+                    agenda[dia]["N"][aula] = None;
+def menuRemoveHorarios(agenda) :
     os.system("clear");
     print("Escolha o horário da matéria será removida. Utilize o formato da universidade (número/letra/números). ");
     horarios = str(input("Caso você queira colocar vários horários de uma vez, separe por ';'. Ex: '25T5; 34M2'.\n"));
     horarios.replace(" ", "").upper();
     horarios = horarios.split(";");
 
-    for horario in horarios :
-        if "M" in horario :
-            dados = horario.split("M");
-            dias = dados[0];
-            aulas = dados[1];
-            for dia in dias :
-                for aula in aulas :
-                    agenda['2']["M"][aula] = None;
-        elif "T" in horario:
-            dados = horario.split("T");
-            dias = dados[0];
-            aulas = dados[1];
-            for dia in dias :
-                for aula in aulas :
-                    agenda[dia]["T"][aula] = None;
-        elif "N" in horario:
-            dados = horario.split("N");
-            dias = dados[0];
-            aulas = dados[1];
-            for dia in dias :
-                for aula in aulas :
-                    agenda[dia]["N"][aula] = None;
+    removeHorarios(agenda, horarios);
 
 # funções de matérias
 def exibeMaterias(materias) :
     print();
     for materia in materias:
+        print("Código da Matéria: " + materia);
         print("Matéria: " + materias[materia]["nome"]);
         print("Professor(a) responsável: " + materias[materia]["professor"] + "\n");
 def cadastraMateria(materias) :
-    os.system("clear");
+    os.system("clear")
+    codigo = str(input("Qual o código da matéria a ser adicionada? "))
     materia = str(input("Qual o nome da matéria a ser adicionada? "));
     professor = str(input("Quem ministra essa matéria? "));
-    materias[materia] = {
+    materias[codigo] = {
         "nome": materia,
         "professor": professor
     };
 def removeMateria(materias) :
     os.system("clear");
-    nome = str(input("Qual o nome da matéria a ser removida? "));
-    professor = str(input("Quem ministra essa matéria? "));
+    codigo = input("Digite o código da matéria que você deseja remover: ");
     for materia in materias :
-        nomeMateria = materias[materia]["nome"];
-        nomeProfessor = materias[materia]["professor"];
-        if nomeMateria == nome and nomeProfessor == professor :
-            apagar = materia;
-    del materias[apagar];
+            if materia == codigo :
+                apagar = materia;
+    if apagar :
+        del materias[apagar];
 
 opcaoPrincipal = menuInicial();
 while opcaoPrincipal != "0":
@@ -355,13 +413,15 @@ while opcaoPrincipal != "0":
     if opcaoPrincipal == "1":
         opcaoSecundaria = menuHorariosAtuais();
         if opcaoSecundaria == "1" :
-            cadastraHorarios(agenda, materias)
-            opcaoPrincipal = redirecionaSucesso()
+            menuCadastraHorarios(agenda, materias);
+            opcaoPrincipal = redirecionaSucesso();
         elif opcaoSecundaria == "2" :
-            cadastraHorarios(agenda, materias);
+            menuCadastraHorarios(agenda, materias)
+            opcaoPrincipal = redirecionaSucesso();
         elif opcaoSecundaria == "3" :
-            removeHorarios(agenda);
-        elif opcaoSecundaria == 0 :
+            menuRemoveHorarios(agenda)
+            opcaoPrincipal = redirecionaSucesso();
+        elif opcaoSecundaria == "0" :
             opcaoPrincipal = menuInicial();
         else :
             opcaoPrincipal = redirecionaErro();
@@ -370,8 +430,8 @@ while opcaoPrincipal != "0":
     elif opcaoPrincipal == "2":
         opcaoSecundaria = menuHorariosVagos();
         if opcaoSecundaria == "1" :
-            cadastraHorarios(agenda, materias)
-            opcaoPrincipal = redirecionaSucesso()
+            menuCadastraHorarios(agenda, materias);
+            opcaoPrincipal = redirecionaSucesso();
         elif opcaoSecundaria == "0" :
             opcaoPrincipal = menuInicial();
         else :
@@ -382,11 +442,11 @@ while opcaoPrincipal != "0":
         opcaoSecundaria = menuMaterias();
         if opcaoSecundaria == "1" :
             cadastraMateria(materias);
-            opcaoPrincipal = redirecionaSucesso()
+            opcaoPrincipal = redirecionaSucesso();
         if opcaoSecundaria == "2":
-            removeMateria(materias)
-            opcaoPrincipal = redirecionaSucesso()
-        elif opcaoSecundaria == 0 :
+            removeMateria(materias);
+            opcaoPrincipal = redirecionaSucesso();
+        elif opcaoSecundaria == "0" :
             opcaoPrincipal = menuInicial();
         else :
             opcaoPrincipal = redirecionaErro();
@@ -400,4 +460,6 @@ while opcaoPrincipal != "0":
     else:
         opcaoPrincipal = redirecionaErro();
 
+read.close();
+write.close();
 print("Fim");
