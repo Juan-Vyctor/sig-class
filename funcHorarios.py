@@ -181,3 +181,10 @@ def removeHorarios(agenda, horarios):
             for dia in dias:
                 for aula in aulas:
                     agenda[dia]["N"][aula] = None;
+
+def removeHorariosMateria(agenda, codigo):
+    for dia in agenda :
+        for turno in agenda[dia] :
+            for horario in agenda[dia][turno] :
+                if agenda[dia][turno][horario] and agenda[dia][turno][horario]["codigo"] == codigo :
+                    agenda[dia][turno][horario] = None

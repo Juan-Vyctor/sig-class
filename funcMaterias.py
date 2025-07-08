@@ -1,4 +1,4 @@
-import os;
+import os, funcHorarios;
 
 def exibeMaterias(materias) :
     print();
@@ -13,15 +13,19 @@ def cadastraMateria(materias) :
     materia = str(input("Qual o nome da matéria a ser adicionada? "));
     professor = str(input("Quem ministra essa matéria? "));
     materias[codigo] = {
+        "codigo": codigo,
         "nome": materia,
         "professor": professor
     };
 
-def removeMateria(materias) :
+def removeMateria(agenda, materias) :
     os.system("clear");
-    codigo = input("Digite o código da matéria que você deseja remover: ");
+    print("Digite o código da matéria que você deseja remover, dentre as seguintes:");
+    exibeMaterias(materias);
+    codigo = str(input());
     for materia in materias :
-            if materia == codigo :
-                apagar = materia;
+        if materia == codigo :
+            apagar = materia;
     if apagar :
+        funcHorarios.removeHorariosMateria(agenda, apagar);
         del materias[apagar];

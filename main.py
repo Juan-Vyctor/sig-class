@@ -7,38 +7,44 @@ import os, pickle, funcExibicao as menuPrincipal, funcHorarios as menuHorarios, 
 # recebimento de arquivos/preenchimento de dados
 # materias
 try :
-    lerMaterias = open("materias.dat", "rb");
-    materias = pickle.load("materias.dat");
-    lerMaterias.close();
+    arqMaterias = open("materias.dat", "rb");
+    materias = {};
+    materias = pickle.load(arqMaterias);
+    arqMaterias.close();
 except:
-    salvarMaterias = open("materias.dat", "wb");
+    arqMaterias = open("materias.dat", "wb");
     materias = {
         "DCT1102": {
+            "codigo": "DCT1102",
             "nome": "Introdução à informática",
             "professor": "Luís Paulo",
         },
         "DCT3101": {
+            "codigo": "DCT3101",
             "nome": "Teoria Geral da Administração",
             "professor": "Humberto Habelo",
         },
         "DCT1301": {
+            "codigo": "DCT1301",
             "nome": "Fundamentos da Matemática",
             "professor": "Almir",
         },
         "a": {
+            "codigo": "a",
             "nome": "a",
             "professor": "a",
         },
-    };
-    pickle.dump(materias, salvarMaterias);
-    salvarMaterias.close();
+    }
+    pickle.dump(materias, arqMaterias);
+    arqMaterias.close();
 # horarios
 try :
-    lerHorarios = open("horarios.dat", "rb");
-    horarios = pickle.load("horarios.dat");
-    lerHorarios.close();
+    arqHorarios = open("horarios.dat", "rb");
+    horarios = {};
+    horarios = pickle.load(arqHorarios);
+    arqHorarios.close();
 except:
-    salvarHorarios = open("horarios.dat", "wb");
+    arqHorarios = open("horarios.dat", "wb");
     horarios = {
         "M": {
             "1": None,
@@ -65,15 +71,16 @@ except:
             "6": None,
         },
     };
-    pickle.dump(horarios, salvarHorarios);
-    salvarHorarios.close();
+    pickle.dump(horarios, arqHorarios);
+    arqHorarios.close();
 # agenda
 try :
-    lerAgenda = open("agenda.dat", "rb")
-    agenda = pickle.load("agenda.dat")
-    lerAgenda.close();
+    arqAgenda = open("agenda.dat", "rb");
+    agenda = {};
+    agenda = pickle.load(arqAgenda);
+    arqAgenda.close();
 except :
-    salvarAgenda = open("agenda.dat", "wb");
+    arqAgenda = open("agenda.dat", "wb");
     agenda = {
         "2": horarios,
         "3": horarios,
@@ -81,8 +88,21 @@ except :
         "5": horarios,
         "6": horarios,
     };
-    pickle.dump(agenda, salvarAgenda);
-    salvarAgenda.close();
+    pickle.dump(agenda, arqAgenda);
+    arqAgenda.close();
+
+def salvaDados(materias, horarios, agenda) :
+    arqMaterias = open("materias.dat", "wb");
+    pickle.dump(materias, arqMaterias);
+    arqMaterias.close();
+
+    arqHorarios = open("horarios.dat", "wb");
+    pickle.dump(horarios, arqHorarios);
+    arqMaterias.close();
+
+    arqAgenda = open("agenda.dat", "wb");
+    pickle.dump(agenda, arqAgenda);
+    arqAgenda.close();
 
 opcaoPrincipal = menuPrincipal.menuInicial();
 while opcaoPrincipal != "0":
@@ -122,24 +142,25 @@ while opcaoPrincipal != "0":
 
     # materias
     elif opcaoPrincipal == "3":
-        opcaoSecundaria = menuMaterias();
+        opcaoSecundaria = menuPrincipal.menuMaterias(materias);
         if opcaoSecundaria == "1" :
             menuMaterias.cadastraMateria(materias);
             opcaoPrincipal = menuPrincipal.redirecionaSucesso();
         if opcaoSecundaria == "2":
-            menuMaterias.removeMateria(materias);
+            menuMaterias.removeMateria(agenda, materias);
             opcaoPrincipal = menuPrincipal.redirecionaSucesso();
         elif opcaoSecundaria == "0" :
             opcaoPrincipal = menuPrincipal.menuInicial();
         else :
             opcaoPrincipal = menuPrincipal.redirecionaErro();
 
-    elif opcaoPrincipal == "0":
-        os.system("clear");
-        print("#########################################################################################");
-        print("############               Você encerrou o programa, até logo!               ############");
-        print("#########################################################################################");
-        print();
-    else:
+    elif opcaoPrincipal != "0":
         opcaoPrincipal = menuPrincipal.redirecionaErro();
+os.system("clear");
+print("#########################################################################################");
+print("############               Você encerrou o programa, até logo!               ############");
+print("#########################################################################################");
+print();
 print("Fim");
+
+salvaDados(materias, horarios, agenda);

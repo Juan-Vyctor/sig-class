@@ -105,7 +105,7 @@ def redirecionaSucesso() :
 def redirecionaErro() :
     os.system("clear");
     print("#########################################################################################");
-    print("############    Você digitou uma opção inválida, voltando ao menu inicial    ############");
+    print("#############   Você digitou uma opção inválida, voltando ao menu inicial    ############");
     print("#########################################################################################");
     print();
     print("#########################################################################################");
