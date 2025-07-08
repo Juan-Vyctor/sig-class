@@ -1,52 +1,88 @@
-import os
+import os, pickle
 
 #####################################
 ##### Projeto Class - Versão 5  #####
 #####################################
 
-# recebimento de arquivos
-write = open("data.py", "w");
-read = open("data.py", "r");
-
-# preenchimento de dados
-materias = {
-    "DCT1102": {
-        "nome": "Introdução à informática",
-        "professor": "Luís Paulo",
-    },
-    "DCT3101": {
-        "nome": "Teoria Geral da Administração",
-        "professor": "Humberto Habelo",
-    },
-    "DCT1301": {
-        "nome": "Fundamentos da Matemática",
-        "professor": "Almir",
-    },
-    "a": {
-        "nome": "a",
-        "professor": "a",
-    },
-}
-horarios = {
-    "M": {
-        "1": None, "2": None, "3": None, "4": None, "5": materias["DCT1102"], "6": materias["DCT1102"],
-        # "1": None, "2": None, "3": None, "4": None, "5": None, "6": None,
-        # "1": materias["DCT1102"], "2": materias["DCT1102"], "3": materias["DCT1102"], "4": materias["DCT1102"], "5": materias["DCT1102"], "6": materias["DCT1102"],
-    },
-    "T": {
-        "1": None, "2": None, "3": None, "4": None, "5": materias["DCT1301"], "6": materias["DCT1301"],
-    },
-    "N": {
-        "1": materias["DCT3101"], "2": materias["DCT3101"], "3": None, "4": None, "5": None, "6": None,
-    },
-};
-agenda = {
-    "2": horarios,
-    "3": horarios,
-    "4": horarios,
-    "5": horarios,
-    "6": horarios,
-};
+# recebimento de arquivos/preenchimento de dados
+# materias
+try :
+    lerMaterias = open("materias.dat", "rb");
+    materias = pickle.load("materias.dat");
+    lerMaterias.close();
+except:
+    salvarMaterias = open("materias.dat", "wb");
+    materias = {
+        "DCT1102": {
+            "nome": "Introdução à informática",
+            "professor": "Luís Paulo",
+        },
+        "DCT3101": {
+            "nome": "Teoria Geral da Administração",
+            "professor": "Humberto Habelo",
+        },
+        "DCT1301": {
+            "nome": "Fundamentos da Matemática",
+            "professor": "Almir",
+        },
+        "a": {
+            "nome": "a",
+            "professor": "a",
+        },
+    };
+    pickle.dump(materias, salvarMaterias);
+    salvarMaterias.close();
+# horarios
+try :
+    lerHorarios = open("horarios.dat", "rb");
+    horarios = pickle.load("horarios.dat");
+    lerHorarios.close();
+except:
+    salvarHorarios = open("horarios.dat", "wb");
+    horarios = {
+        "M": {
+            "1": None,
+            "2": None,
+            "3": None,
+            "4": None,
+            "5": materias["DCT1102"],
+            "6": materias["DCT1102"],
+        },
+        "T": {
+            "1": None,
+            "2": None,
+            "3": None,
+            "4": None,
+            "5": materias["DCT1301"],
+            "6": materias["DCT1301"],
+        },
+        "N": {
+            "1": materias["DCT3101"],
+            "2": materias["DCT3101"],
+            "3": None,
+            "4": None,
+            "5": None,
+            "6": None,
+        },
+    };
+    pickle.dump(horarios, salvarHorarios);
+    salvarHorarios.close();
+# agenda
+try :
+    lerAgenda = open("agenda.dat", "rb")
+    agenda = pickle.load("agenda.dat")
+    lerAgenda.close();
+except :
+    salvarAgenda = open("agenda.dat", "wb");
+    agenda = {
+        "2": horarios,
+        "3": horarios,
+        "4": horarios,
+        "5": horarios,
+        "6": horarios,
+    };
+    pickle.dump(agenda, salvarAgenda);
+    salvarAgenda.close();
 
 # funções de exibição
 def menuInicial() :
@@ -72,17 +108,17 @@ def menuHorariosAtuais() :
 
     haOcupados = False;
     horariosManha = pegaHorariosTurno(agenda, "M");
-    for horario in horariosManha.values() :
-        for ehOcupado in horario.values() :
-            if haOcupados == False :
-                if ehOcupado == True :
-                    haOcupados == True;
+    if haOcupados == False :
+        for horario in horariosManha.values() :
+            for ehOcupado in horario.values() :
+                if ehOcupado != None :
+                    haOcupados = True;
     if haOcupados :
         print("#########################################################################################");
         print("#############                       Horários da Manhã                       #############");
         print("#########################################################################################");
         print();
-        exibeHorariosOcupados(horariosManha);
+        exibeHorariosAtuais(horariosManha);
     else :
         print("#########################################################################################");
         print("#############              Você não possui horários pela Manhã              #############");
@@ -91,17 +127,17 @@ def menuHorariosAtuais() :
 
     haOcupados = False
     horariosTarde = pegaHorariosTurno(agenda, "T")
-    for horario in horariosTarde.values():
-        for ehOcupado in horario.values():
-            if haOcupados == False :
-                if ehOcupado == True:
-                    haOcupados == True;
+    if haOcupados == False :
+        for horario in horariosTarde.values():
+            for ehOcupado in horario.values():
+                if ehOcupado != None:
+                    haOcupados = True;
     if horariosTarde :
         print("#########################################################################################");
         print("#############                       Horários da Tarde                       #############");
         print("#########################################################################################");
         print();
-        exibeHorariosOcupados(horariosTarde);
+        exibeHorariosAtuais(horariosTarde);
     else :
         print("#########################################################################################");
         print("#############              Você não possui horários pela Tarde              #############");
@@ -110,17 +146,17 @@ def menuHorariosAtuais() :
 
     haOcupados = False
     horariosNoite = pegaHorariosTurno(agenda, "N")
-    for horario in horariosNoite.values():
-        for ehOcupado in horario.values():
-            if haOcupados == False :
-                if ehOcupado == True:
-                    haOcupados == True
+    if haOcupados == False :
+        for horario in horariosNoite.values():
+            for ehOcupado in horario.values():
+                if ehOcupado != None:
+                    haOcupados = True
     if horariosNoite :
         print("#########################################################################################");
         print("#############                       Horários da Noite                       #############");
         print("#########################################################################################");
         print();
-        exibeHorariosOcupados(horariosNoite);
+        exibeHorariosAtuais(horariosNoite);
     else :
         print("#########################################################################################");
         print("#############              Você não possui horários pela Noite              #############");
@@ -146,9 +182,9 @@ def menuHorariosVagos() :
 
     haVazios = False;
     horariosManha = pegaHorariosVagos(agenda, "M");
-    for horario in horariosManha.values() :
-        for ehVazio in horario.values() :
-            if ehVazio == False :
+    if haVazios == False :
+        for horario in horariosManha.values() :
+            for ehVazio in horario.values() :
                 if ehVazio == True :
                     haVazios = True;
     if haVazios :
@@ -166,7 +202,7 @@ def menuHorariosVagos() :
     haVazios = False
     horariosTarde = pegaHorariosVagos(agenda, "T")
     for horario in horariosTarde.values():
-        for ehVazio in horario.values():
+        for haVazios in horario.values():
             if ehVazio == False :
                 if ehVazio == True:
                     haVazios = True;
@@ -184,9 +220,9 @@ def menuHorariosVagos() :
 
     haVazios = False
     horariosNoite = pegaHorariosVagos(agenda, "N")
-    for horario in horariosNoite.values():
-        for ehVazio in horario.values():
-            if ehVazio == False :
+    if haVazios == False :
+        for horario in horariosNoite.values():
+            for ehVazio in horario.values():
                 if ehVazio == True:
                     haVazios = True
     if horariosNoite :
@@ -290,7 +326,35 @@ def pegaHorariosVagos(agenda, turno) :
                 vagos[dia][horario] = True
 
     return vagos;
-def exibeHorariosOcupados(horarios) :
+def checaHorarioVago(horarios):
+    haOcupados = False
+    if haOcupados == False:
+        for horario in horarios.values():
+            for ehOcupado in horario.values():
+                if ehOcupado != None:
+                    haOcupados = True
+    return haOcupados;
+def listaHorariosAtuais(agenda, turno, haOcupados):
+    if turno == "M" :
+        turno = "Manhã"
+    elif turno == "T":
+        turno = "Tarde"
+    if turno == "N":
+        turno = "Noite"
+    horarios = pegaHorariosTurno(agenda, turno)
+    haOcupados = checaHorarioVago(horarios);
+    if haOcupados :
+        print("#########################################################################################");
+        print("#############                       Horários da %s                       #############", turno);
+        print("#########################################################################################");
+        print();
+        exibeHorariosAtuais(horarios);
+    else :
+        print("#########################################################################################");
+        print("#############              Você não possui horários pela %s              #############", turno);
+        print("#########################################################################################");
+        print();
+def exibeHorariosAtuais(horarios) :
     for dia in horarios :
         for horario in horarios[dia] :
             print("\n" + dia + "a feira", end=', ');
@@ -461,7 +525,4 @@ while opcaoPrincipal != "0":
         print();
     else:
         opcaoPrincipal = redirecionaErro();
-
-read.close();
-write.close();
 print("Fim");
