@@ -30,6 +30,8 @@ materias = {
 horarios = {
     "M": {
         "1": None, "2": None, "3": None, "4": None, "5": materias["DCT1102"], "6": materias["DCT1102"],
+        # "1": None, "2": None, "3": None, "4": None, "5": None, "6": None,
+        # "1": materias["DCT1102"], "2": materias["DCT1102"], "3": materias["DCT1102"], "4": materias["DCT1102"], "5": materias["DCT1102"], "6": materias["DCT1102"],
     },
     "T": {
         "1": None, "2": None, "3": None, "4": None, "5": materias["DCT1301"], "6": materias["DCT1301"],
